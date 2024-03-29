@@ -32,7 +32,7 @@ def encode_labels(encoder, y_train, y_validation, y_test):
     return y_train_encoded, y_validation_encoded, y_test_encoded
 
 
-def load_and_label_data(data):
+def load_and_label_data(data, label_col="label"):
     X, y = [], []
     for _, row in data.iterrows():
         # based on the code from the exercise
@@ -40,7 +40,7 @@ def load_and_label_data(data):
         img = image.img_to_array(img)
         img = img / 255
         X.append(img)
-        y.append(row["label"])
+        y.append(row[label_col])
     return X, y
 
 
