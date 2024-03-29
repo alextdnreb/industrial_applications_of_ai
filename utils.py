@@ -1,5 +1,9 @@
 import tensorflow as tf
 import matplotlib.pyplot as plt
+import numpy as np
+from keras.utils import load_img
+import keras.utils as image
+import math
 
 
 def plot_feature_maps_for_convs(num_convs, num_filters_first, sample, model):
@@ -28,12 +32,19 @@ def encode_labels(encoder, y_train, y_validation, y_test):
     return y_train_encoded, y_validation_encoded, y_test_encoded
 
 
+def load_and_label_data(data):
+    X, y = [], []
+    for _, row in data.iterrows():
+        # based on the code from the exercise
+        img = load_img(row["path"], target_size=(256, 256, 3))
+        img = image.img_to_array(img)
+        img = img / 255
+        X.append(img)
+        y.append(row["label"])
+    return X, y
+
+
 # based on https://www.tensorflow.org/api_docs/python/tf/keras/utils/Sequence
-import tensorflow as tf
-import numpy as np
-import math
-
-
 class Dataloader(tf.keras.utils.Sequence):
     def __init__(self, x_set, y_set, batch_size):
         self.x, self.y = x_set, y_set
